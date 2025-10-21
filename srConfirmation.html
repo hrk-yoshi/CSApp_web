@@ -12,7 +12,7 @@
   <p>名前: <span id="confirmName"></span></p>
   <p>メールアドレス: <span id="confirmEmail"></span></p>
   <p>機番: <span id="machineSn"></span></p>
-  <p>お問い合わせ内容: <span id="contentId"></span> <span id="contentName"></span></p>
+  <p>お問い合わせ内容: [<span id="contentId"></span>] <span id="contentName"></span></p>
   <div class="submit-button">
   <button  onclick="history.back()">戻る</button>
   <button id="submitBtn">送信</button>
@@ -32,7 +32,7 @@
   document.getElementById("confirmEmail").textContent = email || "未入力";
   document.getElementById("contentId").textContent = contentId || "未選択";
   document.getElementById("contentName").textContent = contentName || "未選択";
-  document.getElementById("machineSn").textContent = contentName || "未選択";
+  document.getElementById("machineSn").textContent = machineSn || "未選択";
 
   });
 

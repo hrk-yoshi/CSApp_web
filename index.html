@@ -16,22 +16,15 @@
     <a href="#" class="btn">トナー発注・回収</a>
   </div>  
 </body>
+
 <script>
-console.log("script loaded");
+  console.log("script loaded");
 
-const params = new URLSearchParams(window.location.search);
-const machineSn = params.get("machineSn");
-
-console.log("URL param machineSn:", machineSn);
-
-if (machineSn) {
+  const params = new URLSearchParams(window.location.search);
+  const machineSn = params.get("machineSn");
+  window.history.replaceState({}, document.title, window.location.pathname);
   localStorage.setItem("machineSn", machineSn);
-  console.log("✅ 機番を保存しました:", machineSn);
-}
-
-const savedSn = localStorage.getItem("machineSn");
-console.log("saved machineSn in localStorage:", savedSn);
-
+  console.log("saved machineSn in localStorage:", machineSn);
 </script>
 
 
