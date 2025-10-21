@@ -1,0 +1,143 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="CSS/style.css" type="text/css">
+    <!-- <script src="scripts/issueTree.js"></script> -->
+
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>現象ツリー</h1>
+    <h2>お困りごとを選択してください</h2>
+    <div class="issueContainer" id="issueContainer">
+        <button id="issue1">画像不具合</button>
+        <button id="issue5">用紙詰まり</button>
+        <button  onclick="history.back()">戻る</button>
+    </div>
+
+    <!-- 現象別表示 -->
+    <div id="content1" class="content">
+        <div class="insideContent" id="insideContent">
+            <button id="issue1-1">黒スジが出る</button>
+            <button disabled id="issue1-2">白スジ・色スジが出る</button>
+            <button class="backBtn">戻る</button>
+        </div>
+    </div>
+    <div id="content1-1" class="content">
+        <div class="insideContent" id="insideContent">
+            <button id="issue1-1-1">コピー時・スキャナー時</button>
+            <button disabled id="issue1-1-2">プリントアウト時</button>
+            <button class="backBtn">戻る</button>
+        </div>
+    </div>
+
+    <div id="content1-1-1" class="content">
+        <div class="insideContent" id="insideContent">
+            <button 
+                data-content-id="1-1-1"
+                data-content-name="コピー時・スキャナー時"
+                content-url="https://faq.ricoh.jp/app/answers/detail/a_id/1854"
+                onclick="saveContentInfo(this)">読み取りガラスの清掃方法
+            </button>
+            <button
+                data-content-id="1-1-1"
+                data-content-name="コピー時・スキャナー時"
+                content-url="https://2280171.mediaspace.kaltura.com/embed/secure/iframe/entryId/1_6g34w6tm/uiConfId/39251761"
+                onclick="saveContentInfo(this)">【動画：読み取りガラスの清掃方法(自動両面原稿送り装置編)】</button>
+            <button class="backBtn">戻る</button>
+        </div>
+    </div>
+
+    <div id="content5" class="content">
+        <div class="insideContent" id="insideContent">
+            <button id="issue5-12">頻繁に紙詰まりやしわが発生</button>
+            <button id="issue5-1">詰まった紙を取り除きたい</button>
+            <button class="backBtn">戻る</button>
+        </div>
+    </div>
+    <div id="content5-12" class="content">
+        <div class="insideContent" id="insideContent">
+            <button 
+            data-content-id="5-12"
+            data-content-name="頻繁に紙詰まりやしわが発生"
+            content-url="https://faq.ricoh.jp/app/answers/detail/a_id/20"
+            onclick="saveContentInfo(this)">紙詰まり・しわ Jxxxx番号が表示される原因
+        </button>
+        <button class="backBtn">戻る</button>
+        </div>
+    </div>
+    <div id="content5-1" class="content">
+        <div class="insideContent" id="insideContent">
+            <button 
+            data-content-id="5-1"
+            data-content-name="詰まった紙を取り除きたい"
+            content-url="https://faq.ricoh.jp/app/answers/ch_detail/mode/2/a_id/2020"
+            onclick="saveContentInfo(this)">詰まった用紙を取り除く方法
+        </button>
+        <button class="backBtn">戻る</button>
+        </div>
+    </div>
+
+    </div>
+    <script>
+        const issueContainer = document.getElementById('issueContainer');
+        const contents = document.querySelectorAll('.content');
+
+        // 「進む」処理
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                contents.forEach(c => c.classList.remove('active'));
+                issueContainer.style.display = 'none';
+
+                if (btn.id === 'issue1') {
+                    document.getElementById('content1').classList.add('active');
+                } else if (btn.id === 'issue5') {
+                    document.getElementById('content5').classList.add('active');
+                } else if (btn.id === 'issue1-1') {
+                    document.getElementById('content1-1').classList.add('active');
+                } else if (btn.id === 'issue1-2') {
+                    document.getElementById('content1-2').classList.add('active');
+                } else if (btn.id === 'issue1-1-1') {
+                    document.getElementById('content1-1-1').classList.add('active');
+                } else if (btn.id === 'issue1-1-2') {
+                    document.getElementById('content1-1-2').classList.add('active');
+                }else if (btn.id === 'issue5-12') {
+                    document.getElementById('content5-12').classList.add('active');
+                } else if (btn.id === 'issue5-1') {
+                    document.getElementById('content5-1').classList.add('active');
+                } 
+            });
+        });
+
+        // 「戻る」処理
+        document.querySelectorAll('.backBtn').forEach(back => {
+            back.addEventListener('click', () => {
+                // 全てのcontentを非表示にする
+                contents.forEach(c => c.classList.remove('active'));
+                // issueContainerを再表示
+                issueContainer.style.display = 'block';
+            });
+        });
+
+        function saveContentInfo(button) {
+            const contentId = button.dataset.contentId;
+            const contentName = button.dataset.contentName;
+
+            localStorage.setItem("selectedContentId", contentId);
+            localStorage.setItem("selectedContentName", contentName);
+            const url = button.getAttribute('content-url');
+                // faq.html にURLパラメータとして渡して遷移
+                location.href = `faq.html?link=${encodeURIComponent(url)}`;
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
