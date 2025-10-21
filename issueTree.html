@@ -3,18 +3,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css" type="text/css">
   <title>Home</title>
 </head>
 <body>
   <h1>現象ツリー</h1>
   <h2>お困りごとを選択してください</h2>
+  <div class="issueContainer"  id="issueContainer">
   <button id="issue1">画像不具合</button>
   <button id="issue5">用紙詰まり</button>
+  </div>
 
-  <div id="treeContainer"></div>
+  <!-- 現象別表示 -->
+        <div id="content1" class="content">
+            <div class="insideContent" id="insideContent">
+            <button id="issue1-1">黒スジ</button>
+            <button id="issue1-2">白スジ</button>
+            </div>
+        </div>
+
+        <div id="content5" class="content">
+            <div class="insideContent" id="insideContent">
+            <button id="issue5-1">紙詰まりA</button>
+            <button id="issue5-2">紙詰まりB</button>
+            </div>
+        </div>
+        <script>
+            const issueContainer = document.getElementById('issueContainer');
+            const buttons = document.querySelectorAll('.issueContainer button');
+            const contents = document.querySelectorAll('.content');
+        
+            buttons.forEach(btn => {
+              btn.addEventListener('click', () => {
+                // 全部非表示にする
+                contents.forEach(c => c.classList.remove('active'));
+        
+                // issueContainerを非表示にする
+                issueContainer.style.display = 'none';
+
+                // 対応するコンテンツを表示
+                if (btn.id === 'issue1') {
+                  document.getElementById('content1').classList.add('active');
+                } else if (btn.id === 'issue5') {
+                  document.getElementById('content5').classList.add('active');
+                }
+              });
+            });
+          </script>
+  <!-- <div id="treeContainer"></div> -->
 
   <!-- JavaScriptファイルを読み込み -->
-  <script src="scripts/issueTree.js"></script>
+  <!-- <script src="scripts/issueTree.js"></script> -->
   
 </body>
 </html>
