@@ -1,0 +1,50 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Embed Links & Buttons Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 16px; }
+    .container { display: flex; gap: 16px; }
+    .panel { width: 320px; }
+    .viewer { flex: 1; border: 1px solid #ccc; height: 600px; }
+    .link-item { margin: 8px 0; }
+    button { padding: 8px 12px; margin-right: 8px; }
+    a.external { color: #0066cc; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h2>Links & Embed Demo</h2>
+  <div class="container">
+    <div class="panel">
+      <h3>Actions</h3>
+
+      <!-- ボタン：iframeに読み込む -->
+      <div class="link-item">
+        <button data-url="https://example.com">Load Example.com</button>
+        <button data-url="https://faq.ricoh.jp/app/answers/detail/a_id/2473">Load FAQ</button>
+      </div>
+
+    </div>
+
+    <!-- 埋め込み表示領域 -->
+    <div class="viewer">
+      <!-- sandbox属性で権限を制限可 -->
+      <iframe id="viewerFrame" sandbox="allow-same-origin allow-forms allow-popups allow-scripts"></iframe>
+
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get("link");
+
+    if (url) {
+      document.getElementById("viewerFrame").src = decodeURIComponent(url);
+    } else {
+      document.body.insertAdjacentHTML("beforeend", "<p>No URL provided.</p>");
+    }
+  </script>
+</body>
+</html>
