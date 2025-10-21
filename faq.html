@@ -6,24 +6,24 @@
   <title>Embed Links & Buttons Demo</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 16px; }
-    .container { display: flex; gap: 16px; }
-    .panel { width: 320px; }
+    /* .panel { width: 20%; } */
     .viewer { flex: 1; border: 1px solid #ccc; height: 600px; }
-    .link-item { margin: 8px 0; }
-    button { padding: 8px 12px; margin-right: 8px; }
+    .link-item { display: flex; margin: 8px 0; }
+    button { width:200px ;padding: 8px 8px; margin-right: 8px; }
     a.external { color: #0066cc; text-decoration: none; }
+    iframe#viewerFrame {
+    width: 100%;
+    height: 100%;
+}
   </style>
 </head>
 <body>
-  <h2>Links & Embed Demo</h2>
   <div class="container">
     <div class="panel">
-      <h3>Actions</h3>
-
       <!-- ボタン：iframeに読み込む -->
       <div class="link-item">
-        <button data-url="https://example.com">Load Example.com</button>
-        <button data-url="https://faq.ricoh.jp/app/answers/detail/a_id/2473">Load FAQ</button>
+        <button  onclick="history.back()">戻る</button>
+        <button onclick="location.href='contactPerson.html'">修理依頼を送る</button>
       </div>
 
     </div>
