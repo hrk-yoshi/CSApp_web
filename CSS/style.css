@@ -1,86 +1,114 @@
-body { font-family: Arial, sans-serif; margin: 0; padding: 16px; height: 100vh; }
-button { width:200px ;padding: 8px 8px; margin-right: 8px; font-size: 24px ;}
-
-
-/* Home */
-.iconContainer {
-    display: flex;
-    flex-direction: column; /* ← 縦方向に並べる */
-    align-items: stretch;   /* 幅を揃える（optional） */
-    gap: 10px;              /* ボタン間の余白 */
-    width: 200px;           /* 全体の幅（任意） */
-    margin: 20px auto;      /* 中央寄せ */
+/* 全体の基本設定 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    margin: 0;
+    padding: 16px;
+    height: 100vh;
+    background-color: #fff;
   }
   
-  .iconContainer button {
-    padding: 10px;
-    font-size: 16px;
+  /* ボタン（共通） */
+  button,
+  a.btn {
+    display: inline-block;
+    width: 100%;
+    max-width: 320px;       /* ← スマホでは画面幅に追従しつつ最大幅を指定 */
+    padding: 12px 16px;
+    font-size: 1.1rem;      /* ← 相対単位で自然なサイズに */
+    text-align: center;
+    background-color: buttonface;
+    color: buttontext;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-decoration: none;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-sizing: border-box;
   }
-
-/* Issue Tree */
-.issueContainer {
+  
+  button:hover,
+  a.btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* 各ボタンコンテナ（縦並び） */
+  .iconContainer,
+  .issueContainer,
+  .insideContent {
     display: flex;
-    flex-direction: column; /* ← 縦方向に並べる */
-    align-items: stretch;   /* 幅を揃える（optional） */
-    gap: 10px;              /* ボタン間の余白 */
-    width: 200px;           /* 全体の幅（任意） */
-    margin: 20px auto;      /* 中央寄せ */
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 360px;
+    margin: 24px auto;
   }
-  .issueContainer button {
-    display: block;
-    margin: 8px 0;
+  
+  .issueContainer button,
+  .insideContent button {
+    width: 100%;
+    font-size: 1rem;
   }
+  
+  /* 各セクションの表示・非表示 */
   .content {
     display: none;
-    width: 200px;           /* 全体の幅（任意） */
-    margin: 20px auto;  
-
+    width: 100%;
+    max-width: 360px;
+    margin: 24px auto;
   }
-  .insideContent{
-    display: flex;
-    flex-direction: column; 
-    align-items: stretch; 
-    gap: 10px;              /* ボタン間の余白 */
-    width: 200px;           /* 全体の幅（任意） */
-    margin: 20px auto;  
-  }
+  
   .active {
     display: block;
   }
-/* FAQ viewer */
-.container{height: 100%;}
-.viewer { flex: 1; border: 1px solid #ccc; height: 100%; }
-.link-item { display: flex; margin: 8px 0; }
-a.external { color: #0066cc; text-decoration: none; }
-iframe#viewerFrame {
+  
+  /* FAQ Viewer */
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .viewer {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 60vh;
+  }
+  .link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+  }
+  iframe#viewerFrame {
     width: 100%;
     height: 100%;
-}
-
-/* 内容確認画面 */
-form {
+    border: none;
+  }
+  
+  /* ===== フォーム画面 ===== */
+  form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     width: 90%;
-    max-width: 500px;
+    max-width: 400px;
     margin: 0 auto;
     background: #fff;
     padding: 1.5rem;
     border-radius: 0.75rem;
-    /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); */
+    box-sizing: border-box;
   }
   
-  /* ===== 入力フィールド ===== */
   input[type="text"],
   input[type="email"] {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.9rem;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
-    box-sizing: border-box;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   
@@ -89,12 +117,28 @@ form {
     box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15);
     outline: none;
   }
-
-
+  
+  /* ボタン並び（フォーム内） */
   .submit-button {
     display: flex;
-    justify-content: center; /* 中央寄せ */
-    gap: 20px;                /* ボタン間のスペース */
-    margin-top: 30px;         /* 上に余白 */
+    flex-direction: column; /* スマホでは縦並び */
+    gap: 12px;
+    margin-top: 24px;
+    align-items: center;
+  }
+  
+  /* --- 小さい画面に合わせて文字や余白を微調整 --- */
+  @media (max-width: 480px) {
+    body {
+      padding: 12px;
+    }
+    button,
+    a.btn {
+      font-size: 1rem;
+      padding: 10px 12px;
+    }
+    form {
+      padding: 1rem;
+    }
   }
   
