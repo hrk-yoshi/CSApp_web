@@ -17,8 +17,6 @@
   </div>  
 </body>
 <script>
-
-<script>
 console.log("script loaded");
 
 const params = new URLSearchParams(window.location.search);
@@ -34,11 +32,9 @@ if (machineSn) {
 const savedSn = localStorage.getItem("machineSn");
 console.log("saved machineSn in localStorage:", savedSn);
 
-if (savedSn) {
-  document.body.insertAdjacentHTML("beforeend", `<p>保存された機番: ${savedSn}</p>`);
-}
 </script>
 
 
 </html>
+
 
