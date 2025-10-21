@@ -12,8 +12,24 @@
   <!-- issueTree.html へ遷移するボタン風リンク -->
   <div class="iconContainer">
     <a href="issueTree.html" class="btn">修理依頼を送る</a>
-    <a href="" class="btn">操作問い合わせ</a>
-    <a href="" class="btn">トナー発注・回収</a>
+    <a href="#" class="btn">操作問い合わせ</a>
+    <a href="#" class="btn">トナー発注・回収</a>
   </div>  
 </body>
+<script>
+ (function() {
+      const params = new URLSearchParams(window.location.search);
+      const machineSn = params.get("machineSn");
+      if (machineSn) {
+        localStorage.setItem("machineSn", machineSn);
+        console.log("✅ 機番を保存しました:", machineSn);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    })();
+    const savedSn = localStorage.getItem("machineSn");
+    if (savedSn) {
+      document.body.insertAdjacentHTML("beforeend", `<p>保存された機番: ${savedSn}</p>`);
+    }
+</script>
+
 </html>
