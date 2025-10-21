@@ -8,6 +8,12 @@
 
 </head>
 <body>
+  <header id="header">
+    <span class="title">お客様サポートアプリ</span>
+    <span class="welcome"></span>
+  </header>
+
+  
   <div class="container">
     <div class="panel">
       <!-- ボタン：iframeに読み込む -->
@@ -27,6 +33,12 @@
   </div>
 
   <script>
+    const machineSn = localStorage.getItem("machineSn");
+    if (machineSn) {
+        const welcomeSpan = document.querySelector(".welcome");
+        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${machineSn}さん</div>`;
+    }
+
     const params = new URLSearchParams(window.location.search);
     const url = params.get("link");
 

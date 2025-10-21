@@ -9,7 +9,12 @@
 
 </head>
 <body>
-  <h1>ご依頼者様</h1>
+    <header id="header">
+        <span class="title">お客様サポートアプリ</span>
+        <span class="welcome"></span>
+      </header>
+      
+    <h2>ご依頼者様</h2>
     <form id="contactInfo">
     <!-- <label for="name">名前:</label> -->
     <input type="text" id="name" name="name" placeholder="名前" required>
@@ -24,6 +29,11 @@
 </body>
 
 <script>
+    const machineSn = localStorage.getItem("machineSn");
+    if (machineSn) {
+        const welcomeSpan = document.querySelector(".welcome");
+        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${machineSn}さん</div>`;
+    }
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("contactInfo");
 

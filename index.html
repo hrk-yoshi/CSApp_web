@@ -7,8 +7,10 @@
   <title>Home</title>
 </head>
 <body>
-  <h1>お客様サポートアプリ</h1>
-
+  <header id="header">
+    <span class="title">お客様サポートアプリ</span>
+    <span class="welcome"></span>
+  </header>
   <!-- issueTree.html へ遷移するボタン風リンク -->
   <div class="iconContainer">
     <a href="issueTree.html" class="btn">修理依頼を送る</a>
@@ -24,7 +26,12 @@
   const machineSn = params.get("machineSn");
   window.history.replaceState({}, document.title, window.location.pathname);
   localStorage.setItem("machineSn", machineSn);
-  console.log("saved machineSn in localStorage:", machineSn);
+
+ if(machineSn){
+  localStorage.setItem("machineSn", machineSn);
+  const welcomeSpan = document.querySelector(".welcome");
+  welcomeSpan.innerHTML = ` <div class="machineSn">ようこそ<br> ${machineSn}さん</div> `;
+ }
 </script>
 
 

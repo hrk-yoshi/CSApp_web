@@ -14,7 +14,7 @@ h1{
 h2{
   font-size: 2rem;
 }
-  
+
   /* ボタン（共通） */
   button,
   a.btn {
@@ -139,6 +139,23 @@ input:focus {
   gap: 12px;
   margin-top: 24px;
   justify-content: center; /* 中央寄せ */
+}
+
+header {
+  text-align: center;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+header .title {
+  font-size: 1.8rem; /* アプリ名大きめ */
+  font-weight: bold;
+}
+
+header .welcome .machineSn {
+  font-size: 1.2rem; /* 機番少し大きく強調 */
+  font-weight: bold;
 }
 
 /* --- 小さい画面に合わせて文字や余白を微調整 --- */

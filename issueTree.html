@@ -11,7 +11,12 @@
 </head>
 
 <body>
-    <h1>現象ツリー</h1>
+    <header id="header">
+        <span class="title">お客様サポートアプリ</span>
+        <span class="welcome"></span>
+      </header>
+
+      
     <h2>お困りごとを選択してください</h2>
     <div class="issueContainer" id="issueContainer">
         <button id="issue1">画像不具合</button>
@@ -83,7 +88,12 @@
     </div>
 
     </div>
-    <script>
+    <script>        
+    const machineSn = localStorage.getItem("machineSn");
+    if (machineSn) {
+        const welcomeSpan = document.querySelector(".welcome");
+        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${machineSn}さん</div>`;
+    }
         const issueContainer = document.getElementById('issueContainer');
         const contents = document.querySelectorAll('.content');
 
