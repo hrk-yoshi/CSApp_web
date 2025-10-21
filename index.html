@@ -24,6 +24,8 @@
         localStorage.setItem("machineSn", machineSn);
         console.log("✅ 機番を保存しました:", machineSn);
         window.history.replaceState({}, document.title, window.location.pathname);
+      }else{
+        console.log("machineSn error");
       }
     })();
     const savedSn = localStorage.getItem("machineSn");
@@ -33,3 +35,4 @@
 </script>
 
 </html>
+
