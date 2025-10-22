@@ -12,30 +12,32 @@
 
 <body>
     <header id="header">
-        <span class="title">お客様サポートアプリ</span>
+        <div class="app-name">
+            <img src="images/AppIcon_t.png" alt="icon">
+            <span class="title">お客様サポートアプリ</span>
+        </div>
         <span class="welcome"></span>
-      </header>
-
+    </header>
 
     <h1>お困りごとを選択してください</h1>
     <div class="issueContainer" id="issueContainer">
-        <button id="issue1">画像不具合</button>
-        <button id="issue5">用紙詰まり</button>
+        <button id="issue1" class="iconBtn"><img src="images/Copy.png" alt="画像不具合">画像不具合</button>
+        <button id="issue5" class="iconBtn"><img src="images/JAM.png" alt="用紙詰まり">用紙詰まり</button>
         <button  onclick="history.back()">戻る</button>
     </div>
 
     <!-- 現象別表示 -->
     <div id="content1" class="content">
         <div class="insideContent" id="insideContent">
-            <button id="issue1-1">黒スジが出る</button>
-            <button disabled id="issue1-2">白スジ・色スジが出る</button>
+            <button id="issue1-1" class="iconBtn"><img src="images/黒スジ.png" alt="黒スジ">黒スジが出る</button>
+            <button disabled id="issue1-2" class="iconBtn"><img src="images/白スジ.png" alt="白スジ">白スジ・色スジが出る</button>
             <button class="backBtn">戻る</button>
         </div>
     </div>
     <div id="content1-1" class="content">
         <div class="insideContent" id="insideContent">
-            <button id="issue1-1-1">コピー時・スキャナー時</button>
-            <button disabled id="issue1-1-2">プリントアウト時</button>
+            <button id="issue1-1-1" class="iconBtn"><img src="images/Copy.png" alt="Copy">コピー時・スキャナー時</button>
+            <button disabled id="issue1-1-2" class="iconBtn"><img src="images/Print.png" alt="Print">プリントアウト時</button>
             <button class="backBtn">戻る</button>
         </div>
     </div>
@@ -129,7 +131,7 @@
                 // 全てのcontentを非表示にする
                 contents.forEach(c => c.classList.remove('active'));
                 // issueContainerを再表示
-                issueContainer.style.display = 'block';
+                issueContainer.style.display = 'flex';
             });
         });
 
