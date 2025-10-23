@@ -24,34 +24,38 @@
 </body>
 
 <script>
-  console.log("script loaded");
+console.log("script loaded");
 
-  const params = new URLSearchParams(window.location.search);
-  const machineSn = params.get("machineSn");
-  const kisyu = localStorage.getItem("kisyu");
-  const kiban = localStorage.getItem("kiban");
+const params = new URLSearchParams(window.location.search);
+const machineSn = params.get("machineSn");
+let kisyu = "";
+let kiban = "";
 
 if (machineSn) {
+  // URLにあるときは毎回更新
   const parts = machineSn.split("-");
-  window.history.replaceState({}, document.title, window.location.pathname);
-
-  if (parts.length === 4 && parts[0] && parts[1]) {
-    const [kisyu, kiban] = parts;
+  if (parts.length === 2 && parts[0] && parts[1]) {
+    [kisyu, kiban] = parts;
     localStorage.setItem("kisyu", kisyu);
     localStorage.setItem("kiban", kiban);
-    const welcomeSpan = document.querySelector(".welcome");
-    welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban}さん</div>`;
+    window.history.replaceState({}, document.title, window.location.pathname);
   } else {
-    // ハイフンなし・形式不正なら遷移
     window.location.replace("machineSn.html");
+    return;
   }
-
-}else  if(kisyu && kiban){
-  const welcomeSpan = document.querySelector(".welcome");
-  welcomeSpan.innerHTML = ` <div class="machineSn">ようこそ<br> ${kisyu}-${kiban}さん</div> `;
- }else {
-  window.location.replace("machineSn.html");
+} else {
+  // URLにmachineSnがない場合、過去の値を利用
+  kisyu = localStorage.getItem("kisyu");
+  kiban = localStorage.getItem("kiban");
+  if (!kisyu || !kiban) {
+    window.location.replace("machineSn.html");
+    return;
+  }
 }
+
+const welcomeSpan = document.querySelector(".welcome");
+welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban}さん</div>`;
+
 </script>
 
 
