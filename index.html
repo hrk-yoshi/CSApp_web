@@ -41,7 +41,6 @@ if (machineSn) {
     window.history.replaceState({}, document.title, window.location.pathname);
   } else {
     window.location.replace("machineSn.html");
-    return;
   }
 } else {
   // URLにmachineSnがない場合、過去の値を利用
@@ -59,6 +58,7 @@ welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban
 
 
 </html>
+
 
 
 
