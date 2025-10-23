@@ -31,10 +31,7 @@
   const kisyu = localStorage.getItem("kisyu");
   const kiban = localStorage.getItem("kiban");
 
- if(kisyu && kiban){
-  const welcomeSpan = document.querySelector(".welcome");
-  welcomeSpan.innerHTML = ` <div class="machineSn">ようこそ<br> ${kisyu}-${kiban}さん</div> `;
- }else if (machineSn) {
+if (machineSn) {
   const parts = machineSn.split("-");
   window.history.replaceState({}, document.title, window.location.pathname);
 
@@ -49,7 +46,10 @@
     window.location.replace("machineSn.html");
   }
 
-}else{
+}else  if(kisyu && kiban){
+  const welcomeSpan = document.querySelector(".welcome");
+  welcomeSpan.innerHTML = ` <div class="machineSn">ようこそ<br> ${kisyu}-${kiban}さん</div> `;
+ }else {
   window.location.replace("machineSn.html");
 }
 </script>
