@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("kisyu", kisyu);
     localStorage.setItem("kiban", kiban);
 
-    window.location.href = "index.html";
+    window.location.href = `index.html?machineSn=${kisyu}-${kiban}`;
   });
 });
     

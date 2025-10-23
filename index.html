@@ -43,12 +43,9 @@ if (machineSn) {
     window.location.replace("machineSn.html");
   }
 } else {
-  // URLにmachineSnがない場合、過去の値を利用
-  kisyu = localStorage.getItem("kisyu");
-  kiban = localStorage.getItem("kiban");
-  if (!kisyu || !kiban) {
+
     window.location.replace("machineSn.html");
-  }
+
 }
 
 const welcomeSpan = document.querySelector(".welcome");
@@ -58,7 +55,6 @@ welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban
 
 
 </html>
-
 
 
 
