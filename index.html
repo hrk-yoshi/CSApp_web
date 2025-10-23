@@ -49,7 +49,6 @@ if (machineSn) {
   kiban = localStorage.getItem("kiban");
   if (!kisyu || !kiban) {
     window.location.replace("machineSn.html");
-    return;
   }
 }
 
@@ -60,5 +59,6 @@ welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban
 
 
 </html>
+
 
 
