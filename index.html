@@ -34,7 +34,7 @@ let kiban = "";
 if (machineSn) {
   // URLにあるときは毎回更新
   const parts = machineSn.split("-");
-  if (parts.length === 2 && parts[0] && parts[1]) {
+  if (parts.length > 3 && parts[0] && parts[1]) {
     [kisyu, kiban] = parts;
     localStorage.setItem("kisyu", kisyu);
     localStorage.setItem("kiban", kiban);
@@ -59,6 +59,7 @@ welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban
 
 
 </html>
+
 
 
 
