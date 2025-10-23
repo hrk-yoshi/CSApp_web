@@ -12,144 +12,150 @@
 
 <body>
     <header id="header">
-        <div class="app-name">
-            <img src="images/AppIcon_t.png" alt="icon">
-            <span class="title">お客様サポートアプリ</span>
-        </div>
-        <span class="welcome"></span>
+      <a href="index.html" class="app-name">
+        <img src="images/AppIcon_t.png" alt="修理依頼icon">
+        <span class="title">お客様サポートアプリ</span>
+      </a>
+      <span class="welcome"></span>
     </header>
+  
+    <h1>お困りごと選択</h1>
+  
+    <div id="contentArea"></div>
 
-    <h1>お困りごとを選択してください</h1>
-    <div class="issueContainer" id="issueContainer">
-        <button id="issue1" class="iconBtn"><img src="images/Copy.png" alt="画像不具合">画像不具合</button>
-        <button id="issue5" class="iconBtn"><img src="images/JAM.png" alt="用紙詰まり">用紙詰まり</button>
-        <button  onclick="history.back()">戻る</button>
-    </div>
+    
+  <script>    
+    // ====== データ定義 ======
+    const issueTree = {
+      "root": [
+        { id: "1", name: "画像不具合", img: "images/画像不具合.png" },
+        { id: "5", name: "用紙詰まり", img: "images/JAM.png" }
+      ],
+      "1": [
+        { id: "1-1", name: "黒スジが出る", img: "images/黒スジ.png" },
+        { id: "1-2", name: "白スジ・色スジが出る", img: "images/白スジ.png", disabled: true }
+      ],
+      "1-1": [
+        { id: "1-1-1", name: "コピー時・スキャナー時", img: "images/Copy.png" },
+        { id: "1-1-2", name: "プリントアウト時", img: "images/Print.png", disabled: true }
+      ],
+      "1-1-1": {
+        faq: [
+          { name: "読み取りガラスの清掃方法", url: "https://faq.ricoh.jp/app/answers/detail/a_id/1854" },
+          { name: "動画：読み取りガラスの清掃方法", url: "https://2280171.mediaspace.kaltura.com/embed/secure/iframe/entryId/1_6g34w6tm/uiConfId/39251761" }
+        ]
+      },
+      "5": [
+        { id: "5-12", name: "頻繁に紙詰まりやしわが発生" },
+        { id: "5-1", name: "詰まった紙を取り除きたい" }
+      ],
+      "5-12": {
+        faq: [
+          { name: "紙詰まり・しわ Jxxxx番号が表示される原因", url: "https://faq.ricoh.jp/app/answers/detail/a_id/20" }
+        ]
+      },
+      "5-1": {
+        faq: [
+          { name: "詰まった用紙を取り除く方法", url: "https://faq.ricoh.jp/app/answers/ch_detail/mode/2/a_id/2020" }
+        ]
+      }
+    };
+// ====== DOM構築ロジック ======
+const contentArea = document.getElementById("contentArea");
+let currentLevel = "root";
 
-    <!-- 現象別表示 -->
-    <div id="content1" class="content">
-        <div class="insideContent" id="insideContent">
-            <button id="issue1-1" class="iconBtn"><img src="images/黒スジ.png" alt="黒スジ">黒スジが出る</button>
-            <button disabled id="issue1-2" class="iconBtn"><img src="images/白スジ.png" alt="白スジ">白スジ・色スジが出る</button>
-            <button class="backBtn">戻る</button>
-        </div>
-    </div>
-    <div id="content1-1" class="content">
-        <div class="insideContent" id="insideContent">
-            <button id="issue1-1-1" class="iconBtn"><img src="images/Copy.png" alt="Copy">コピー時・スキャナー時</button>
-            <button disabled id="issue1-1-2" class="iconBtn"><img src="images/Print.png" alt="Print">プリントアウト時</button>
-            <button class="backBtn">戻る</button>
-        </div>
-    </div>
+function renderContent(level) {
+  contentArea.innerHTML = "";
+  const data = issueTree[level];
 
-    <div id="content1-1-1" class="content">
-        <div class="insideContent" id="insideContent">
-            <button 
-                data-content-id="1-1-1"
-                data-content-name="コピー時・スキャナー時"
-                content-url="https://faq.ricoh.jp/app/answers/detail/a_id/1854"
-                onclick="saveContentInfo(this)">読み取りガラスの清掃方法
-            </button>
-            <button
-                data-content-id="1-1-1"
-                data-content-name="コピー時・スキャナー時"
-                content-url="https://2280171.mediaspace.kaltura.com/embed/secure/iframe/entryId/1_6g34w6tm/uiConfId/39251761"
-                onclick="saveContentInfo(this)">【動画：読み取りガラスの清掃方法(自動両面原稿送り装置編)】</button>
-            <button class="backBtn">戻る</button>
-        </div>
-    </div>
+  const container = document.createElement("div");
+  container.className = "issueContainer";
+  const h1 = document.querySelector("h1");
 
-    <div id="content5" class="content">
-        <div class="insideContent" id="insideContent">
-            <button id="issue5-12">頻繁に紙詰まりやしわが発生</button>
-            <button id="issue5-1">詰まった紙を取り除きたい</button>
-            <button class="backBtn">戻る</button>
-        </div>
-    </div>
-    <div id="content5-12" class="content">
-        <div class="insideContent" id="insideContent">
-            <button 
-            data-content-id="5-12"
-            data-content-name="頻繁に紙詰まりやしわが発生"
-            content-url="https://faq.ricoh.jp/app/answers/detail/a_id/20"
-            onclick="saveContentInfo(this)">紙詰まり・しわ Jxxxx番号が表示される原因
-        </button>
-        <button class="backBtn">戻る</button>
-        </div>
-    </div>
-    <div id="content5-1" class="content">
-        <div class="insideContent" id="insideContent">
-            <button 
-            data-content-id="5-1"
-            data-content-name="詰まった紙を取り除きたい"
-            content-url="https://faq.ricoh.jp/app/answers/ch_detail/mode/2/a_id/2020"
-            onclick="saveContentInfo(this)">詰まった用紙を取り除く方法
-        </button>
-        <button class="backBtn">戻る</button>
-        </div>
-    </div>
+  // topRow：戻る＋依頼する
+  if (level !== "root") {
+    const topRow = document.createElement("div");
+    topRow.className = "topRow";
 
-    </div>
-    <script>        
-    const machineSn = localStorage.getItem("machineSn");
-    if (machineSn) {
-        const welcomeSpan = document.querySelector(".welcome");
-        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${machineSn}さん</div>`;
+    const backBtn = document.createElement("button");
+    backBtn.className = "backBtn";
+    backBtn.textContent = "←";
+    backBtn.onclick = () =>
+      renderContent(level.includes("-") ? level.slice(0, level.lastIndexOf("-")) : "root");
+
+    topRow.appendChild(backBtn);
+
+    // FAQを持つページのみ「依頼する」ボタンを追加
+    if (data.faq) {
+      const requestBtn = document.createElement("a");
+      requestBtn.href = "contactPerson.html?from=faq";
+      requestBtn.className = "btn requestBtn";
+      requestBtn.textContent = "依頼する";
+      topRow.appendChild(requestBtn);
     }
-        const issueContainer = document.getElementById('issueContainer');
-        const contents = document.querySelectorAll('.content');
 
-        // 「進む」処理
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                contents.forEach(c => c.classList.remove('active'));
-                issueContainer.style.display = 'none';
+    container.appendChild(topRow);
 
-                if (btn.id === 'issue1') {
-                    document.getElementById('content1').classList.add('active');
-                } else if (btn.id === 'issue5') {
-                    document.getElementById('content5').classList.add('active');
-                } else if (btn.id === 'issue1-1') {
-                    document.getElementById('content1-1').classList.add('active');
-                } else if (btn.id === 'issue1-2') {
-                    document.getElementById('content1-2').classList.add('active');
-                } else if (btn.id === 'issue1-1-1') {
-                    document.getElementById('content1-1-1').classList.add('active');
-                } else if (btn.id === 'issue1-1-2') {
-                    document.getElementById('content1-1-2').classList.add('active');
-                }else if (btn.id === 'issue5-12') {
-                    document.getElementById('content5-12').classList.add('active');
-                } else if (btn.id === 'issue5-1') {
-                    document.getElementById('content5-1').classList.add('active');
-                } 
-            });
-        });
+  } else if (level === "root") {
+    // ルート階層専用の戻るボタン
+    const topRow = document.createElement("div");
+    topRow.className = "topRow";
 
-        // 「戻る」処理
-        document.querySelectorAll('.backBtn').forEach(back => {
-            back.addEventListener('click', () => {
-                // 全てのcontentを非表示にする
-                contents.forEach(c => c.classList.remove('active'));
-                // issueContainerを再表示
-                issueContainer.style.display = 'flex';
-            });
-        });
+    const backBtn = document.createElement("button");
+    backBtn.className = "backBtn";
+    backBtn.textContent = "←";
+    backBtn.onclick = () => history.back();
 
-        function saveContentInfo(button) {
-            const contentId = button.dataset.contentId;
-            const contentName = button.dataset.contentName;
+    topRow.appendChild(backBtn);
+    container.appendChild(topRow);
+  }
 
-            localStorage.setItem("selectedContentId", contentId);
-            localStorage.setItem("selectedContentName", contentName);
-            const url = button.getAttribute('content-url');
-                // faq.html にURLパラメータとして渡して遷移
-                location.href = `faq.html?link=${encodeURIComponent(url)}`;
-        }
+  // FAQ表示ページ
+  if (data.faq) {
+    if (h1) h1.textContent = "関連するコンテンツ";
+
+    const faqList = document.createElement("div");
+    faqList.className ="insideContent";
+    faqList.innerHTML = `<p>ご選択いただいた内容は以下の手順で改善する可能性があります。</p>`;
+    data.faq.forEach(faq => {
+      const btn = document.createElement("button");
+      btn.className = "faq-content";
+      btn.textContent = faq.name;
+      btn.onclick = () =>
+        (location.href = `faq.html?link=${encodeURIComponent(faq.url)}`);
+      faqList.appendChild(btn);
+    });
+    container.appendChild(faqList);
+  } else {
+    if (h1) h1.textContent = "お困りごと選択";
+  }
 
 
-    </script>
+  // ボタンリスト
+  if (Array.isArray(data)) {
+    data.forEach(issue => {
+      const btn = document.createElement("button");
+      btn.className = "iconBtn";
+      
+      if (issue.img) {
+        btn.innerHTML = `<img src="${issue.img}" alt="">${issue.name}`;
+      } else {
+        btn.textContent = issue.name; // 画像がないときは文字のみ
+      }
+    
+    if (issue.disabled) btn.disabled = true;
+      btn.onclick = () => renderContent(issue.id);
+      container.appendChild(btn);
+    });
+  }
+
+  contentArea.appendChild(container);
+}
+
+renderContent("root");
 
 
+</script>    
 </body>
 
 </html>

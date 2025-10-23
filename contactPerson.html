@@ -10,32 +10,38 @@
 </head>
 <body>
     <header id="header">
-        <div class="app-name">
-          <img src="images/AppIcon_t.png" alt="修理依頼icon">
-          <span class="title">お客様サポートアプリ</span>
-        </div>
+      <a href="index.html" class="app-name">
+        <img src="images/AppIcon_t.png" alt="修理依頼icon">
+        <span class="title">お客様サポートアプリ</span>
+      </a>
         <span class="welcome"></span>
     </header>
       
-    <h1>ご依頼者様</h1>
+    <h1>折り返しご連絡先入力</h1>
     <form id="contactInfo">
-    <!-- <label for="name">名前:</label> -->
-    <input type="text" id="name" name="name" placeholder="名前" required>
-    <br>
-    <!-- <label for="email">メールアドレス:</label> -->
-    <input type="email" id="email" name="email" placeholder="example@abc.com" required>
-    <div class="submit-button">
-    <button onclick="history.back()" type="button">戻る</button>
-    <button id="submitBtn" type="submit" >内容確認へ</button>
-    </div>
+      <p>※サービス実施店の営業時間内に折返しのご連絡をさせていただきます。</p>
+      <label for="name">名前:</label>
+      <input type="text" id="name" name="name" placeholder="名前" required>
+      <br>
+      <label for="email">電話番号:</label>
+      <input type="tel" id="tel" name="tel" autocomplete="tel" placeholder="090-1234-5678">
+      <br>
+      <label for="remarks">備考欄：</label>
+      <textarea id="remarks" name="remarks" rows="4" cols="40"placeholder="ご要望や補足があればご記入ください。"      ></textarea>
+      <!-- <input type="email" id="email" name="email" placeholder="example@abc.com" required> -->
+      <div class="submit-button">
+        <button onclick="history.back()" type="button">戻る</button>
+        <button id="submitBtn" type="submit" >内容確認へ</button>
+      </div>
     </form>
 </body>
 
 <script>
-    const machineSn = localStorage.getItem("machineSn");
-    if (machineSn) {
+        const kisyu = localStorage.getItem("kisyu");
+        const kiban = localStorage.getItem("kiban");
+    if (kisyu&&kiban) {
         const welcomeSpan = document.querySelector(".welcome");
-        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${machineSn}さん</div>`;
+        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban}さん</div>`;
     }
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("contactInfo");
@@ -44,10 +50,14 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault(); // ページ遷移前に保存
 
     const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
+    // const email = document.getElementById("email").value;
+    const tel = document.getElementById("tel").value;
+    const remarks = document.getElementById("remarks").value;
 
     localStorage.setItem("userName", name);
-    localStorage.setItem("userEmail", email);
+    // localStorage.setItem("userEmail", email);
+    localStorage.setItem("userTel", tel);
+    localStorage.setItem("remarks", remarks);
 
     window.location.href = "srConfirmation.html";
   });

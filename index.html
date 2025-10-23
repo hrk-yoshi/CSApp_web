@@ -15,9 +15,10 @@
     <span class="welcome"></span>
   </header>
   <!-- issueTree.html へ遷移するボタン風リンク -->
+  <h1>メインメニュー</h1>
   <div class="iconContainer">
     <a href="issueTree.html" class="btn horizontal"><img src="images/SR_t.png" alt="修理依頼icon">修理依頼を送る</a>
-    <a href="#" class="btn horizontal"><img src="images/OI_t.png" alt="修理依頼icon">操作問い合わせ</a>
+    <a href="Operation.html" class="btn horizontal"><img src="images/OI_t.png" alt="修理依頼icon">操作問い合わせ</a>
     <a href="#" class="btn horizontal"><img src="images/TR_t.png" alt="修理依頼icon">トナー発注・回収</a>
   </div>  
 </body>
@@ -27,14 +28,30 @@
 
   const params = new URLSearchParams(window.location.search);
   const machineSn = params.get("machineSn");
-  window.history.replaceState({}, document.title, window.location.pathname);
-  localStorage.setItem("machineSn", machineSn);
+  const kisyu = localStorage.getItem("kisyu");
+  const kiban = localStorage.getItem("kiban");
 
- if(machineSn){
-  localStorage.setItem("machineSn", machineSn);
+ if(kisyu && kiban){
   const welcomeSpan = document.querySelector(".welcome");
-  welcomeSpan.innerHTML = ` <div class="machineSn">ようこそ<br> ${machineSn}さん</div> `;
- }
+  welcomeSpan.innerHTML = ` <div class="machineSn">ようこそ<br> ${kisyu}-${kiban}さん</div> `;
+ }else if (machineSn) {
+  const parts = machineSn.split("-");
+  window.history.replaceState({}, document.title, window.location.pathname);
+
+  if (parts.length === 4 && parts[0] && parts[1]) {
+    const [kisyu, kiban] = parts;
+    localStorage.setItem("kisyu", kisyu);
+    localStorage.setItem("kiban", kiban);
+    const welcomeSpan = document.querySelector(".welcome");
+    welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban}さん</div>`;
+  } else {
+    // ハイフンなし・形式不正なら遷移
+    window.location.replace("machineSn.html");
+  }
+
+}else{
+  window.location.replace("machineSn.html");
+}
 </script>
 
 

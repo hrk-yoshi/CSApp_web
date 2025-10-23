@@ -1,0 +1,110 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="CSS/style.css" type="text/css">
+    <!-- <script src="scripts/issueTree.js"></script> -->
+
+    <title>Home</title>
+</head>
+
+<body>
+    <header id="header">
+        <a href="index.html" class="app-name">
+            <img src="images/AppIcon_t.png" alt="修理依頼icon">
+            <span class="title">お客様サポートアプリ</span>
+        </a>
+        <span class="welcome"></span>
+    </header>
+
+    <h1>お困りごと選択</h1>
+    <div class="issueContainer" id="issueContainer">
+        <button id="oi1" class="iconBtn"><img src="images/TonerChange.png" alt="Toner">サプライ/消耗品</button>
+        <button class="backBtn" onclick="history.back()">戻る</button>
+    </div>
+    <div id="content1" class="content">
+        <div class="insideContent" id="insideContent">
+            <button id="oi1-1" class="iconBtn"
+                    data-content-id="1-1"
+                    data-content-name="サプライ/消耗品の交換方法"
+                    onclick="saveContentInfo(this)">
+                    <img src="images/TonerChange.png" alt="Toner">サプライ/消耗品の交換方法</button>
+            <button class="backBtn" onclick="history.back()">戻る</button>
+        </div>
+    </div>
+
+    <div id="content1-1" class="content">
+        <div class="insideContent" id="insideContent">
+            <p>ご選択いただいた内容は以下の手順で改善する可能性があります。</p>
+            <button class="faq-content"
+             content-url="https://faq.ricoh.jp/app/answers/ch_detail/mode/2/a_id/2261"
+            >トナー交換手順
+        </button>
+        <button class="backBtn">戻る</button>
+        </div>
+    </div>
+
+    <script>        
+        const machineSn = localStorage.getItem("machineSn");
+        if (machineSn) {
+            const welcomeSpan = document.querySelector(".welcome");
+            welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${machineSn}さん</div>`;
+        }
+            const issueContainer = document.getElementById('issueContainer');
+            const contents = document.querySelectorAll('.content');
+
+        // 「進む」処理
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                contents.forEach(c => c.classList.remove('active'));
+                issueContainer.style.display = 'none';
+
+                if (btn.id === 'oi1') {
+                    document.getElementById('content1').classList.add('active');
+                } else if (btn.id === 'oi1-1') {
+                    document.getElementById('content1-1').classList.add('active');
+                } 
+            });
+        });
+
+        // 「戻る」処理
+        document.querySelectorAll('.backBtn').forEach(back => {
+            back.addEventListener('click', () => {
+                // 全てのcontentを非表示にする
+                contents.forEach(c => c.classList.remove('active'));
+                // issueContainerを再表示
+                issueContainer.style.display = 'flex';
+            });
+        });
+
+        function saveContentInfo(button) {
+            const contentId = button.dataset.contentId;
+            const contentName = button.dataset.contentName;
+
+            localStorage.setItem("selectedContentId", contentId);
+            localStorage.setItem("selectedContentName", contentName);
+           
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+        const faqButtons = document.querySelectorAll('.faq-content');
+        faqButtons.forEach(button => {
+            button.addEventListener('click', function() {
+            const url = this.getAttribute('content-url');
+            if (url) {
+                // faq.htmlにURLを渡して遷移
+                location.href = `faq.html?link=${encodeURIComponent(url)}`;
+            } else {
+                console.warn("⚠️ content-url 属性が設定されていません:", this);
+            }
+            });
+        });
+        });
+    </script>
+
+
+</body>
+
+</html>
