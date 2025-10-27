@@ -2,56 +2,60 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <script src="scripts/confirm.js"></script> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="CSS/style.css" type="text/css">
 
   <title>確認画面</title>
 </head>
 <body>
   <header id="header">
-      <a href="index.html" class="app-name">
-        <img src="images/AppIcon_t.png" alt="修理依頼icon">
+    <a id="homeLink" href="#" class="app-name">
+      <img src="images/AppIcon_t.png" alt="修理依頼icon">
         <span class="title">お客様サポートアプリ</span>
       </a>
     <span class="welcome"></span>
   </header>
 
   <h1>依頼内容確認</h1>
+  <h3>以下の内容で依頼を送付します。よろしいですか？</h3>
+
   <div class="confirm">
-    <p>以下の内容で依頼を送付します。<br>よろしいですか？</p>
-    <h2>- 依頼内容 -</h2>
+    <h2>依頼内容</h2>
     <p>お問い合わせ内容:<br>[<span id="contentId"></span>] <span id="contentName"></span></p>
     <p>備考: <br><span id="remarks"></span></p>
     <p>機器: <br><span id="kisyu"></span><span> - </span><span id="kiban"></span></p><br>
-    <h2>- ご連絡先 -</h2>
+    <h2>ご連絡先</h2>
     <p>名前:<br> <span id="confirmName"></span></p>
-    <!-- <p>メールアドレス: <br><span id="confirmEmail"></span></p> -->
     <p>電話番号: <br><span id="confirmTel"></span></p>
+    <p>メールアドレス: <br><span id="confirmEmail"></span></p>
   </div>
   <div class="submit-button">
-    <button  onclick="history.back()">戻る</button>
-    <button id="submitBtn">依頼する</button>
+    <button class="backBtn"  onclick="history.back()">←</button>
+    <button class="btn requestBtn">依頼する</button>
   </div>
 </body>
 
 <script>
-        const kisyu = localStorage.getItem("kisyu");
-        const kiban = localStorage.getItem("kiban");
-    if (kisyu&&kiban) {
+const kisyu = localStorage.getItem("kisyu");
+const kiban = localStorage.getItem("kiban");
+const homeLink = document.getElementById("homeLink");
+
+      if (kisyu&&kiban) {
+        homeLink.href = `index.html?machineSn=${kisyu}-${kiban}`;
         const welcomeSpan = document.querySelector(".welcome");
-        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban}さん</div>`;
-    }
+        welcomeSpan.innerHTML = `<div class="machineSn">ご利用中の機器<br>[ ${kisyu}-${kiban} ]</div>`;
+      }
   document.addEventListener("DOMContentLoaded", function () {
     
   const name = localStorage.getItem("userName");
-  // const email = localStorage.getItem("userEmail");
+  const email = localStorage.getItem("userEmail");
   const tel = localStorage.getItem("userTel");
   const contentId = localStorage.getItem("selectedContentId");
   const contentName = localStorage.getItem("selectedContentName");
   const remarks = localStorage.getItem("remarks");
 
   document.getElementById("confirmName").textContent = name || "未入力";
-  // document.getElementById("confirmEmail").textContent = email || "未入力";
+  document.getElementById("confirmEmail").textContent = email || "未入力";
   document.getElementById("confirmTel").textContent = tel || "未入力";
   document.getElementById("contentId").textContent = contentId || "未選択";
   document.getElementById("contentName").textContent = contentName || "未選択";

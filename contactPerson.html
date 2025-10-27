@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- <script src="scripts/dataStrage.js"></script> -->
   <link rel="stylesheet" href="CSS/style.css" type="text/css">
 
@@ -10,7 +11,7 @@
 </head>
 <body>
     <header id="header">
-      <a href="index.html" class="app-name">
+      <a id="homeLink" href="#" class="app-name">
         <img src="images/AppIcon_t.png" alt="修理依頼icon">
         <span class="title">お客様サポートアプリ</span>
       </a>
@@ -18,31 +19,33 @@
     </header>
       
     <h1>折り返しご連絡先入力</h1>
+    <h3>※サービス実施店の営業時間内に折返しのご連絡をさせていただきます。</h3>
     <form id="contactInfo">
-      <p>※サービス実施店の営業時間内に折返しのご連絡をさせていただきます。</p>
-      <label for="name">名前:</label>
+      <label for="name">*名前:</label>
       <input type="text" id="name" name="name" placeholder="名前" required>
-      <br>
-      <label for="email">電話番号:</label>
+      <label for="phone">*電話番号:</label>
       <input type="tel" id="tel" name="tel" autocomplete="tel" placeholder="090-1234-5678">
-      <br>
+      <label for="email">メールアドレス:</label>
+      <input type="email" id="email" name="email" placeholder="example@abc.com" >
       <label for="remarks">備考欄：</label>
       <textarea id="remarks" name="remarks" rows="4" cols="40"placeholder="ご要望や補足があればご記入ください。"      ></textarea>
-      <!-- <input type="email" id="email" name="email" placeholder="example@abc.com" required> -->
       <div class="submit-button">
-        <button onclick="history.back()" type="button">戻る</button>
+        <button class="backBtn" onclick="history.back()" type="button">←</button>
         <button id="submitBtn" type="submit" >内容確認へ</button>
       </div>
     </form>
 </body>
 
 <script>
-        const kisyu = localStorage.getItem("kisyu");
-        const kiban = localStorage.getItem("kiban");
-    if (kisyu&&kiban) {
+const kisyu = localStorage.getItem("kisyu");
+const kiban = localStorage.getItem("kiban");
+const homeLink = document.getElementById("homeLink");
+
+      if (kisyu&&kiban) {
+        homeLink.href = `index.html?machineSn=${kisyu}-${kiban}`;
         const welcomeSpan = document.querySelector(".welcome");
-        welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${kisyu}-${kiban}さん</div>`;
-    }
+        welcomeSpan.innerHTML = `<div class="machineSn">ご利用中の機器<br>[ ${kisyu}-${kiban} ]</div>`;
+      }
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("contactInfo");
 
@@ -50,12 +53,12 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault(); // ページ遷移前に保存
 
     const name = document.getElementById("name").value;
-    // const email = document.getElementById("email").value;
+    const email = document.getElementById("email").value;
     const tel = document.getElementById("tel").value;
     const remarks = document.getElementById("remarks").value;
 
     localStorage.setItem("userName", name);
-    // localStorage.setItem("userEmail", email);
+    localStorage.setItem("userEmail", email);
     localStorage.setItem("userTel", tel);
     localStorage.setItem("remarks", remarks);
 

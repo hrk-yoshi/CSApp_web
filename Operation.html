@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="CSS/style.css" type="text/css">
     <!-- <script src="scripts/issueTree.js"></script> -->
 
@@ -12,96 +13,187 @@
 
 <body>
     <header id="header">
-        <a href="index.html" class="app-name">
+        <a id="homeLink" href="#" class="app-name">
             <img src="images/AppIcon_t.png" alt="修理依頼icon">
             <span class="title">お客様サポートアプリ</span>
         </a>
         <span class="welcome"></span>
     </header>
 
-    <h1>お困りごと選択</h1>
-    <div class="issueContainer" id="issueContainer">
-        <button id="oi1" class="iconBtn"><img src="images/TonerChange.png" alt="Toner">サプライ/消耗品</button>
-        <button class="backBtn" onclick="history.back()">戻る</button>
-    </div>
-    <div id="content1" class="content">
-        <div class="insideContent" id="insideContent">
-            <button id="oi1-1" class="iconBtn"
-                    data-content-id="1-1"
-                    data-content-name="サプライ/消耗品の交換方法"
-                    onclick="saveContentInfo(this)">
-                    <img src="images/TonerChange.png" alt="Toner">サプライ/消耗品の交換方法</button>
-            <button class="backBtn" onclick="history.back()">戻る</button>
-        </div>
-    </div>
+    <h1>操作問い合わせ</h1>
+    <h3>お問い合わせ内容を選択してください。</h3>
+    <div class="issueRoot"></div>
+    <div id="contentArea"></div>
 
-    <div id="content1-1" class="content">
-        <div class="insideContent" id="insideContent">
-            <p>ご選択いただいた内容は以下の手順で改善する可能性があります。</p>
-            <button class="faq-content"
-             content-url="https://faq.ricoh.jp/app/answers/ch_detail/mode/2/a_id/2261"
-            >トナー交換手順
-        </button>
-        <button class="backBtn">戻る</button>
-        </div>
-    </div>
-
-    <script>        
-        const machineSn = localStorage.getItem("machineSn");
-        if (machineSn) {
-            const welcomeSpan = document.querySelector(".welcome");
-            welcomeSpan.innerHTML = `<div class="machineSn">ようこそ<br>${machineSn}さん</div>`;
-        }
-            const issueContainer = document.getElementById('issueContainer');
-            const contents = document.querySelectorAll('.content');
-
-        // 「進む」処理
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                contents.forEach(c => c.classList.remove('active'));
-                issueContainer.style.display = 'none';
-
-                if (btn.id === 'oi1') {
-                    document.getElementById('content1').classList.add('active');
-                } else if (btn.id === 'oi1-1') {
-                    document.getElementById('content1-1').classList.add('active');
-                } 
-            });
-        });
-
-        // 「戻る」処理
-        document.querySelectorAll('.backBtn').forEach(back => {
-            back.addEventListener('click', () => {
-                // 全てのcontentを非表示にする
-                contents.forEach(c => c.classList.remove('active'));
-                // issueContainerを再表示
-                issueContainer.style.display = 'flex';
-            });
-        });
-
-        function saveContentInfo(button) {
-            const contentId = button.dataset.contentId;
-            const contentName = button.dataset.contentName;
-
-            localStorage.setItem("selectedContentId", contentId);
-            localStorage.setItem("selectedContentName", contentName);
-           
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-        const faqButtons = document.querySelectorAll('.faq-content');
-        faqButtons.forEach(button => {
-            button.addEventListener('click', function() {
-            const url = this.getAttribute('content-url');
-            if (url) {
-                // faq.htmlにURLを渡して遷移
-                location.href = `faq.html?link=${encodeURIComponent(url)}`;
-            } else {
-                console.warn("⚠️ content-url 属性が設定されていません:", this);
+    <script>
+        // ====== データ定義 ======
+        const issueTree = {
+            "root": [
+                { id: "1", name: "サプライ/消耗品", img: "images/TonerChange.png" },
+                { id: "2", name: "その他", img: "images/OI_t.png" }
+            ],
+            "1": [
+                { id: "1-1", name: "サプライ/消耗品の交換方法", img: "images/TonerChange.png" },
+            ],
+            "1-1": {
+                faq: [
+                    { name: "💡 トナー交換手順", url: "https://faq.ricoh.jp/app/answers/ch_detail/mode/2/a_id/2261" },
+                    { name: "💡 廃トナーボトル交換手順", url: "https://faq.ricoh.jp/app/answers/ch_detail/mode/2/a_id/2225" }
+                ]
+            },
+            "2": {
+                faq: [
+                ]
             }
-            });
-        });
-        });
+        };
+        // ====== DOM構築ロジック ======
+        const contentArea = document.getElementById("contentArea");
+        const issueRoot = document.querySelector(".issueRoot");
+
+        let currentLevel = "root";
+        function renderContent(level) {
+            contentArea.innerHTML = "";
+            const data = issueTree[level];
+            const h3 = document.querySelector("h3");
+            const container = document.createElement("div");
+            container.className = "issueContainer";
+
+            // ===== パンくずリスト生成 =====
+            issueRoot.innerHTML = ""; // 一旦リセット
+
+            if (level !== "root") {
+                const parts = level.split("-");
+                let path = "";
+
+                parts.forEach((p, i) => {
+                    path = path ? `${path}-${p}` : p; // 例: 1 → 1-1 → 1-1-1
+
+                    let label = "";
+                    if (i === 0) {
+                        const found = issueTree["root"].find(el => el.id === path);
+                        label = found ? found.name : "";
+                    } else {
+                        const parentPath = path.slice(0, path.lastIndexOf("-"));
+                        const found = issueTree[parentPath]?.find(el => el.id === path);
+                        label = found ? found.name : "";
+                        
+                    }
+
+                    // ラベルが見つからなかった場合（FAQ階層など）
+                    if (!label && issueTree[path]?.faq) {
+                        label = "FAQ";
+                    }
+
+                    const crumb = document.createElement("span");
+                    crumb.textContent = label || "不明";
+                    crumb.className = "breadcrumb";
+
+
+
+                    // クリックで上位階層へ戻る
+                    crumb.onclick = () => renderContent(path);
+
+                    issueRoot.appendChild(crumb);
+
+                    // 区切り「>」
+                    if (i < parts.length - 1) {
+                        const sep = document.createElement("span");
+                        sep.textContent = " > ";
+                        issueRoot.appendChild(sep);
+                    }
+                });
+            }
+
+            // ---- topRow生成（共通） ----
+            const topRow = document.createElement("div");
+            topRow.className = "topRow";
+
+            const backBtn = document.createElement("button");
+            backBtn.className = "backBtn";
+            backBtn.textContent = "←";
+            backBtn.onclick = () =>
+                renderContent(level.includes("-") ? level.slice(0, level.lastIndexOf("-")) : "root");
+            topRow.appendChild(backBtn);
+
+            // FAQページなら「依頼する」ボタン追加
+            if (data.faq) {
+                const requestBtn = document.createElement("a");
+                requestBtn.href = "contactPerson.html?from=faq";
+                requestBtn.className = "btn requestBtn";
+                requestBtn.textContent = "依頼する";
+                topRow.appendChild(requestBtn);
+            }
+
+            // root階層なら戻るは履歴戻り
+            if (level === "root") {
+                backBtn.onclick = () => history.back();
+            }
+
+            // ---- FAQページの場合 ----
+            if (data.faq) {
+                if (h3) h3.textContent = "ご選択いただいた内容は、以下の手順で改善する可能性があります。";
+                const faqList = document.createElement("div");
+                faqList.className = "insideContent";
+                // faqList.innerHTML = `<p></p>`;
+                if (!data.faq || data.faq.length === 0) {
+                    window.location.replace("contactPerson.html?from=faq");
+                } else {
+                    data.faq.forEach(faq => {
+                        const btn = document.createElement("button");
+                        btn.className = "faq-content";
+                        btn.textContent = faq.name;
+                        btn.onclick = () => location.href = `faq.html?link=${encodeURIComponent(faq.url)}`;
+                        faqList.appendChild(btn);
+
+                    });
+                }
+
+                container.appendChild(faqList);
+                container.appendChild(topRow);
+
+            } else if (Array.isArray(data)) {
+                // ---- 通常の選択肢ページ ----
+                if (h3) h3.textContent = "カテゴリーを選択してください。"
+                data.forEach(issue => {
+                    const btn = document.createElement("button");
+                    btn.className = "iconBtn";
+                    if (issue.img) {
+                        btn.innerHTML = `<img src="${issue.img}" alt="">${issue.name}`;
+                    } else {
+                        btn.textContent = issue.name;
+                    }
+                    if (issue.disabled) btn.disabled = true;
+                    btn.onclick = () => {
+                        localStorage.setItem("selectedContentId",issue.id);
+                        localStorage.setItem("selectedContentName",issue.name);
+                        console.log(issue.id, issue.name);
+                        renderContent(issue.id);
+                    }
+                    container.appendChild(btn);
+                });
+                container.appendChild(topRow);
+
+            } else {
+                // ---- 想定外データ（保険）----
+                container.innerHTML = "<p>データが存在しません。</p>";
+            }
+
+            // 描画
+            contentArea.appendChild(container);
+        }
+
+
+        renderContent("root");
+
+        const kisyu = localStorage.getItem("kisyu");
+        const kiban = localStorage.getItem("kiban");
+        const homeLink = document.getElementById("homeLink");
+
+        if (kisyu && kiban) {
+            homeLink.href = `index.html?machineSn=${kisyu}-${kiban}`;
+            const welcomeSpan = document.querySelector(".welcome");
+            welcomeSpan.innerHTML = `<div class="machineSn">ご利用中の機器<br>[ ${kisyu}-${kiban} ]</div>`;
+        }
     </script>
 
 
