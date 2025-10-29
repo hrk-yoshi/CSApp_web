@@ -21,10 +21,10 @@
   </header>
 
   <h1>修理依頼を送る</h1>
-  <h3>カテゴリーを選択してください。</h3>
   <div class="issueRoot"></div>
+  <h3>カテゴリーを選択してください。</h3>
   <div id="contentArea"></div>
-
+  <div class="topRow"></div>
 
   <script>
     // ====== データ定義 ======
@@ -65,10 +65,14 @@
     // ====== DOM構築ロジック ======
     const contentArea = document.getElementById("contentArea");
     const issueRoot = document.querySelector(".issueRoot");
+    const topRow = document.querySelector(".topRow");
 
     let currentLevel = "root";
     function renderContent(level) {
       contentArea.innerHTML = "";
+      topRow.innerHTML = ""; // ← ボタンをリセット
+      contentArea.classList.remove("faq-mode"); // ← まず削除
+
       const data = issueTree[level];
       const h3 = document.querySelector("h3");
       const container = document.createElement("div");
@@ -120,8 +124,8 @@
       }
 
       // ---- topRow生成（共通） ----
-      const topRow = document.createElement("div");
-      topRow.className = "topRow";
+      // const topRow = document.createElement("div");
+      // topRow.className = "topRow";
 
       const backBtn = document.createElement("button");
       backBtn.className = "backBtn";
@@ -132,6 +136,8 @@
 
       // FAQページなら「依頼する」ボタン追加
       if (data.faq) {
+        contentArea.classList.add("faq-mode"); // ← 追加
+
         const requestBtn = document.createElement("a");
         requestBtn.href = "contactPerson.html?from=faq";
         requestBtn.className = "btn requestBtn";
@@ -146,10 +152,10 @@
 
       // ---- FAQページの場合 ----
       if (data.faq) {
-        if (h3) h3.textContent = "ご選択いただいた内容は、以下の手順で改善する可能性があります。";
+        if (h3) h3.textContent = "";
         const faqList = document.createElement("div");
         faqList.className = "insideContent";
-        // faqList.innerHTML = `<p></p>`;
+        faqList.innerHTML = `<h3>ご選択いただいた内容は、以下の手順で改善する可能性があります。</h3>`;
 
         data.faq.forEach(faq => {
           const btn = document.createElement("button");
@@ -159,7 +165,7 @@
           faqList.appendChild(btn);
         });
         container.appendChild(faqList);
-        container.appendChild(topRow);
+        // container.appendChild(topRow);
 
       } else if (Array.isArray(data)) {
         // ---- 通常の選択肢ページ ----
@@ -175,13 +181,13 @@
           if (issue.disabled) btn.disabled = true;
           btn.onclick = () => {
             localStorage.setItem("selectedContentId",issue.id);
-            localStorage.setItem("selectedContentName",issue.name);
+            localStorage.setItem("selectedContentId",issue.name);
             renderContent(issue.id);
           }
           container.appendChild(btn);
         });
         
-        container.appendChild(topRow);
+        // container.appendChild(topRow);
 
       } else {
         // ---- 想定外データ（保険）----
