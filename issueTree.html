@@ -180,13 +180,22 @@
           }
           if (issue.disabled) btn.disabled = true;
           btn.onclick = () => {
-            localStorage.setItem("selectedContentId",issue.id);
-            localStorage.setItem("selectedContentId",issue.name);
+            const breadcrumbs = Array.from(document.querySelectorAll(".breadcrumb"));
+            const breadcrumbText = breadcrumbs.map(b => b.textContent).join(" > ");
+
+            const selectedFullPath = breadcrumbText
+              ? `${breadcrumbText} > ${issue.name}`
+              : issue.name;
+
+            // 保存
+            localStorage.setItem("selectedContentId", issue.id);
+            localStorage.setItem("selectedContentName", selectedFullPath);
+
             renderContent(issue.id);
           }
           container.appendChild(btn);
         });
-        
+
         // container.appendChild(topRow);
 
       } else {

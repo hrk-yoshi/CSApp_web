@@ -21,9 +21,10 @@
     </header>
 
     <h1>操作問い合わせ</h1>
-    <h3>お問い合わせ内容を選択してください。</h3>
     <div class="issueRoot"></div>
+    <h3>お問い合わせ内容を選択してください。</h3>
     <div id="contentArea"></div>
+    <div class="topRow"></div>
 
     <script>
         // ====== データ定義 ======
@@ -49,10 +50,12 @@
         // ====== DOM構築ロジック ======
         const contentArea = document.getElementById("contentArea");
         const issueRoot = document.querySelector(".issueRoot");
+        const topRow = document.querySelector(".topRow");
 
         let currentLevel = "root";
         function renderContent(level) {
             contentArea.innerHTML = "";
+            topRow.innerHTML = ""; // ← ボタンをリセット
             const data = issueTree[level];
             const h3 = document.querySelector("h3");
             const container = document.createElement("div");
@@ -76,7 +79,7 @@
                         const parentPath = path.slice(0, path.lastIndexOf("-"));
                         const found = issueTree[parentPath]?.find(el => el.id === path);
                         label = found ? found.name : "";
-                        
+
                     }
 
                     // ラベルが見つからなかった場合（FAQ階層など）
@@ -105,8 +108,8 @@
             }
 
             // ---- topRow生成（共通） ----
-            const topRow = document.createElement("div");
-            topRow.className = "topRow";
+            // const topRow = document.createElement("div");
+            // topRow.className = "topRow";
 
             const backBtn = document.createElement("button");
             backBtn.className = "backBtn";
@@ -117,6 +120,8 @@
 
             // FAQページなら「依頼する」ボタン追加
             if (data.faq) {
+                contentArea.classList.add("faq-mode");
+
                 const requestBtn = document.createElement("a");
                 requestBtn.href = "contactPerson.html?from=faq";
                 requestBtn.className = "btn requestBtn";
@@ -131,10 +136,11 @@
 
             // ---- FAQページの場合 ----
             if (data.faq) {
-                if (h3) h3.textContent = "ご選択いただいた内容は、以下の手順で改善する可能性があります。";
+                if (h3) h3.textContent = "";
                 const faqList = document.createElement("div");
                 faqList.className = "insideContent";
-                // faqList.innerHTML = `<p></p>`;
+                faqList.innerHTML = `<h3>ご選択いただいた内容は、以下の手順で改善する可能性があります。</h3>`;
+
                 if (!data.faq || data.faq.length === 0) {
                     window.location.replace("contactPerson.html?from=faq");
                 } else {
@@ -149,7 +155,7 @@
                 }
 
                 container.appendChild(faqList);
-                container.appendChild(topRow);
+                // container.appendChild(topRow);
 
             } else if (Array.isArray(data)) {
                 // ---- 通常の選択肢ページ ----
@@ -164,14 +170,21 @@
                     }
                     if (issue.disabled) btn.disabled = true;
                     btn.onclick = () => {
-                        localStorage.setItem("selectedContentId",issue.id);
-                        localStorage.setItem("selectedContentName",issue.name);
-                        console.log(issue.id, issue.name);
+                        const breadcrumbs = Array.from(document.querySelectorAll(".breadcrumb"));
+                        const breadcrumbText = breadcrumbs.map(b => b.textContent).join(" > ");
+
+                        const selectedFullPath = breadcrumbText
+                            ? `${breadcrumbText} > ${issue.name}`
+                            : issue.name;
+
+                        // 保存
+                        localStorage.setItem("selectedContentId", issue.id);
+                        localStorage.setItem("selectedContentName", selectedFullPath);            renderContent(issue.id);
                         renderContent(issue.id);
                     }
                     container.appendChild(btn);
                 });
-                container.appendChild(topRow);
+                // container.appendChild(topRow);
 
             } else {
                 // ---- 想定外データ（保険）----
