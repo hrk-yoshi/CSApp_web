@@ -31,7 +31,7 @@
   </div>
   <div class="submit-button">
     <button class="backBtn"  onclick="history.back()">←</button>
-    <button class="btn requestBtn">依頼する</button>
+    <button type="button" class="btn requestBtn" id="requestBtn">依頼する</button>
   </div>
 </body>
 
@@ -47,23 +47,25 @@ const homeLink = document.getElementById("homeLink");
       }
   document.addEventListener("DOMContentLoaded", function () {
     
-  const name = localStorage.getItem("userName");
-  const email = localStorage.getItem("userEmail");
-  const tel = localStorage.getItem("userTel");
-  const contentId = localStorage.getItem("selectedContentId");
-  const contentName = localStorage.getItem("selectedContentName");
-  const remarks = localStorage.getItem("remarks");
+    const name = localStorage.getItem("userName");
+    const email = localStorage.getItem("userEmail");
+    const tel = localStorage.getItem("userTel");
+    const contentId = localStorage.getItem("selectedContentId");
+    const contentName = localStorage.getItem("selectedContentName");
+    const remarks = localStorage.getItem("remarks");
 
-  document.getElementById("confirmName").textContent = name || "未入力";
-  document.getElementById("confirmEmail").textContent = email || "未入力";
-  document.getElementById("confirmTel").textContent = tel || "未入力";
-  document.getElementById("contentId").textContent = contentId || "未選択";
-  document.getElementById("contentName").textContent = contentName || "未選択";
-  document.getElementById("kisyu").textContent = kisyu || "未選択";
-  document.getElementById("kiban").textContent = kiban || "未選択";
-  document.getElementById("remarks").textContent = remarks || "未入力";
+    document.getElementById("confirmName").textContent = name || "未入力";
+    document.getElementById("confirmEmail").textContent = email || "未入力";
+    document.getElementById("confirmTel").textContent = tel || "未入力";
+    document.getElementById("contentId").textContent = contentId || "未選択";
+    document.getElementById("contentName").textContent = contentName || "未選択";
+    document.getElementById("kisyu").textContent = kisyu || "未選択";
+    document.getElementById("kiban").textContent = kiban || "未選択";
+    document.getElementById("remarks").textContent = remarks || "未入力";
 
   });
-
+  document.getElementById('requestBtn').addEventListener('click', function () {
+    window.location.href = 'https://forms.office.com/Pages/ResponsePage.aspx?id=PewX5zZgdke3LkH0lIHZHksudFxNGIlLhXUL2AxcJ5hUQjhaNkpFSktCQzA5UUJTS05ZNEJFRDJTNi4u';
+  });
 </script>
 </html>
