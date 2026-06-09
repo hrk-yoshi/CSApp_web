@@ -26,10 +26,7 @@ h3{
   font-weight: 500;
   margin: 5px 15px
 }
-a{
-  display: flex;
-  align-items: center;
-}
+
 p{
   font-size: 0.9rem;
   margin-top:10px;
@@ -42,7 +39,6 @@ p{
     display: inline-block;
     max-width: 800px;     
     padding: 5px 10px;
-    font-size: 0.9rem;      /* ← 相対単位で自然なサイズに */
     text-align: center;
     background-color: buttonface;
     color: buttontext;
@@ -290,7 +286,7 @@ label{
   text-decoration: none;
 }
 header img {
-  width: 10%;   /* アイコンサイズ調整 */
+  width: 20%;  
   object-fit: contain;
 }
 header {
@@ -298,6 +294,7 @@ header {
   padding: 12px 12px ;
   display: flex;
   justify-content: space-between;
+  height: 5%;
 }
 
 header .title {
@@ -308,13 +305,42 @@ header .title {
 }
 
 header .welcome .machineSn {
-  font-size: 0.6rem; /* 機番少し大きく強調 */
+  font-size: 0.8rem; /* 機番少し大きく強調 */
   font-weight: bold;
   justify-content: right;
 }
 .welcome{
   width: 100%;
 }
+
+.dify{
+  height: 95%;
+
+}
+.dify-float-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: #a0d8ef;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 28px;
+  text-align: center;
+  line-height: 56px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ホバー時 */
+.dify-float-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
 /* --- 小さい画面に合わせて文字や余白を微調整 --- */
 @media (max-width: 480px) {
 

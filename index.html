@@ -1,6 +1,7 @@
 <!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,58 +9,59 @@
   <link rel="stylesheet" href="CSS/style.css" type="text/css">
   <title>Home</title>
 </head>
-<body><div class="app-container">
-  <header id="header">
-    <div class="app-name">
-      <img src="images/AppIcon_t.png" alt="修理依頼icon">
-      <span class="title">お客様サポートアプリ</span>
+
+<body>
+  <div class="app-container">
+    <header id="header">
+      <div class="app-name">
+        <img src="images/AppIcon_t.png" alt="修理依頼icon">
+        <span class="title">お客様サポートアプリ</span>
+      </div>
+      <span class="welcome"></span>
+    </header>
+    <!-- issueTree.html へ遷移するボタン風リンク -->
+    <h1>メインメニュー</h1>
+    <div id="mainmenu">
+      <div class="iconContainer">
+        <a href="issueTree.html" class="btn horizontal"><img src="images/SR_t.png" alt="修理依頼icon">修理依頼を送る</a>
+        <a href="Operation.html" class="btn horizontal"><img src="images/OI_t.png" alt="修理依頼icon">操作問い合わせ</a>
+        <a href="#" class="btn horizontal"><img src="images/TR_t.png" alt="修理依頼icon">トナー発注・回収</a>
+      </div>
     </div>
-    <span class="welcome"></span>
-  </header>
-  <!-- issueTree.html へ遷移するボタン風リンク -->
-  <h1>メインメニュー</h1>
-  <div  id="mainmenu">
-    <div class="iconContainer">
-      <a href="issueTree.html" class="btn horizontal"><img src="images/SR_t.png" alt="修理依頼icon">修理依頼を送る</a>
-      <a href="Operation.html" class="btn horizontal"><img src="images/OI_t.png" alt="修理依頼icon">操作問い合わせ</a>
-      <a href="#" class="btn horizontal"><img src="images/TR_t.png" alt="修理依頼icon">トナー発注・回収</a>
-    </div>  
   </div>
-</div></body>
+  
+<a href="dify.html" class="dify-float-button" title="Difyを開く">🤖</a>
+
+</body>
 
 <script>
-console.log("script loaded");
+  console.log("script loaded");
 
-const params = new URLSearchParams(window.location.search);
-const machineSn = params.get("machineSn");
-let kisyu = "";
-let kiban = "";
+  const params = new URLSearchParams(window.location.search);
+  const machineSn = params.get("machineSn");
+  let kisyu = "";
+  let kiban = "";
 
-if (machineSn) {
-  // URLにあるときは毎回更新
-  const parts = machineSn.split("-");
-  if (parts.length === 2 && parts[0] && parts[1]) {
-    [kisyu, kiban] = parts;
-    localStorage.setItem("kisyu", kisyu);
-    localStorage.setItem("kiban", kiban);
+  if (machineSn) {
+    // URLにあるときは毎回更新
+    const parts = machineSn.split("-");
+    if (parts.length === 2 && parts[0] && parts[1]) {
+      [kisyu, kiban] = parts;
+      localStorage.setItem("kisyu", kisyu);
+      localStorage.setItem("kiban", kiban);
+    } else {
+      window.location.replace("machineSn.html");
+    }
   } else {
+
     window.location.replace("machineSn.html");
+
   }
-} else {
 
-    window.location.replace("machineSn.html");
-
-}
-
-const welcomeSpan = document.querySelector(".welcome");
-welcomeSpan.innerHTML = `<div class="machineSn">ご利用中の機器<br>[ ${kisyu}-${kiban} ]</div>`;
+  const welcomeSpan = document.querySelector(".welcome");
+  welcomeSpan.innerHTML = `<div class="machineSn">ご利用中の機器<br>[ ${kisyu}-${kiban} ]</div>`;
 
 </script>
 
 
 </html>
-
-
-
-
-
